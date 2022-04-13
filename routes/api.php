@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Address;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +18,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::middleware('auth:api')->get('/address', function () {
+    return Address::where('user_id', auth()->user()->id)->first();
+});
+
+Route::middleware('client')->get('/users', function () {
+    return User::with('address')->get();
 });
